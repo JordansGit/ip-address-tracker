@@ -1,6 +1,11 @@
 .attribution { font-size: 11px; text-align: center; }
 .attribution a { color: hsl(228, 45%, 44%); }
 
+:root {
+  --very-dark-gray: hsl(0, 0%, 17%);
+  --dark-gray: hsl(0, 0%, 59%);
+}
+
 * {
   font-family: 'Rubik', sans-serif;
 }
@@ -10,32 +15,66 @@ body {
   width: 100vw;
   margin: 0;
 }
+
 h1 {
   color: white;
-  font-weight: 700;
-  margin: 0;
+  font-weight: 500;
+  margin: 30px 0;
+  font-size: 34px;
 }
+
 h2 {
-  color: hsl(0, 0%, 17%);
+  color: var(--very-dark-gray);
   font-weight: 500;
   margin: 10px 0 0 0;
-  
+  font-size: 28px;
 }
+
 p {
-  color: hsl(0, 0%, 59%); 
+  color: var(--dark-gray); 
   font-weight: 500;
   margin: 0;
 }
 
-input {
+.searchbar {
+  display: flex;
+  align-items: center;
+}
+
+input[type="text"] {
   font-weight: 400;
   font-size: 18px;
+  padding: 15px 25px;
+  border: none;
+  height: 28px;
+  outline: none;
+  color: var(--dark-gray);
+  border-radius: 15px 0 0 15px;
+  width: 490px;
+}
+
+.arrow {
+  width: 11px;
+  height: 14px;
+}
+
+#submit {
+  background: var(--very-dark-gray);
+  padding: 22px 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 15px 15px 0;
+}
+
+#submit:hover {
+  cursor: pointer;
 }
 
 .top {
   background: url('../images/pattern-bg.png') no-repeat; 
   background-size: cover;
-  height: 30%;
+  height: 31%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -47,20 +86,32 @@ input {
   display: grid;
   background: white;
   border-radius: 15px;
-  top: 200px; /*25%;*/
+  top: 215px; /*25%;*/
   left: 50%;
   transform: translate(-50%, 0);
   width: 1100px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  height: 130px;
-  padding: 30px 0 0 0;
+  height: 100px;
+  padding: 30px 0;
+  z-index: 99;
 }
 
-.bottom {
-  background: grey;
-  height: 68%;
+#map {
+  height: 67%;
+  z-index: 1;
 }
 
 .block {
   padding: 0 0 0 30px;
+  border-right: 1px solid var(--dark-gray);
+}
+
+.block:last-child {
+  border-right: none;
+}
+
+.block p {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
 }
