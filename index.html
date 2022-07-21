@@ -22,30 +22,30 @@
   <section class="top">
     <h1>IP Address Tracker</h1>
 
-    <div class="searchbar">
-      <input type="text" placeholder="Search for any IP address or domain">
-      <div id="submit">
-        <input type="image" src="./images/icon-arrow.svg" class="arrow">   
-      </div>
+    <form>
+      <input type="text" placeholder="Search for any IP address or domain" id="searchbar">
+      <button id="submit">
+        <img src="./images/icon-arrow.svg" class="arrow">   
+      </button>
     </div>
   </section>
 
   <div class="middle">
     <div class="block">
       <p>IP Address</p>
-      <h2></h2>
+      <h2 id="ip-address"></h2>
     </div>
     <div class="block">
       <p>Location</p>
-      <h2></h2>
+      <h2 id="location"></h2>
     </div>
     <div class="block">
       <p>Timezone</p>
-      <h2>UTC <!-- add offset value dynamically using the API --><span></span></h2>
+      <h2 id="timezone">UTC <!-- add offset value dynamically using the API --><span></span></h2>
     </div>
     <div class="block">
       <p>ISP</p>
-      <h2></h2>
+      <h2 id="isp"></h2>
     </div>
   </div>
 

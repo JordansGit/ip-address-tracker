@@ -1,3 +1,9 @@
+let ipAddress = document.getElementById('ip-address');
+let locationOutput = document.getElementById('location');
+let timezone = document.getElementById('timezone');
+let isp = document.getElementById('isp');
+
+
 // map 
 var map = L.map('map').setView([51.505, -0.09], 13);
 
@@ -11,26 +17,37 @@ var customIcon = L.icon({
   iconUrl: './images/icon-location.svg',
 
   iconSize:     [46, 56], // size of the icon
-  iconAnchor:   [22, 36], // [22, 56] point of the icon which will correspond to marker's location
+  iconAnchor:   [22, 36], // point of the icon which will correspond to marker's location
 });
 
+// standard icon on page load. 
 var marker = L.marker([51.5, -0.09], {icon: customIcon}).addTo(map);
-
-//var marker = L.marker([51.5, -0.09]).addTo(map);  // this is the code for the default marker. 
-
-
-// popup 
-marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-
-var popup = L.popup()
-    .setLatLng([51.513, -0.09])
-    .setContent("I am a standalone popup.")
-    .openOn(map);
 
 
 // click events 
 function onMapClick(e) {
-  alert("You clicked the map at " + e.latlng);
+  marker.remove(); // remove previous marker 
+  console.log("You clicked the map at " + e.latlng);
+  marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: customIcon}).addTo(map); // add new marker 
+  marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup(); // add popup to new marker 
+
+  ipAddress.textContent = 'ip address';
+  locationOutput.textContent = 'location';
+  timezone.textContent = 'timezone';
+  isp.textContent = 'isp';
+  console.log(e);
 }
 
-map.on('click', onMapClick);
+map.on('click', onMapClick); // event listener 
+
+
+// form 
+let form = document.querySelector('form');
+let searchbar = document.getElementById('searchbar');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  let IpAddValue = searchbar.value;
+  ipAddress.textContent = IpAddValue;
+})
