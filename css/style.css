@@ -27,7 +27,7 @@ h2 {
   color: var(--very-dark-gray);
   font-weight: 500;
   margin: 10px 0 0 0;
-  font-size: 28px;
+  font-size: 24px;
 }
 
 p {
@@ -104,6 +104,10 @@ input[type="text"] {
 .block {
   padding: 0 0 0 30px;
   border-right: 1px solid var(--dark-gray);
+}
+
+.block > * {
+  margin-right: 10px;
 }
 
 .block:last-child {

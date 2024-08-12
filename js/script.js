@@ -8,16 +8,18 @@ let userLon = -0.09
 // let userLat = 51.3981801 
 // let userLon = 0.5521803
 
-// get user's lon lat
+// get user's lon lat. NOTE:
 navigator.geolocation.getCurrentPosition((position) => {
   userLat = position.coords.latitude
   userLon = position.coords.longitude
 });
 console.log(userLat, userLon)
 setTimeout(x, 1000)
-function x() {
+function x (){
   console.log(userLat, userLon)
 }
+
+
 
 // map 
 var map = L.map('map').setView([userLat, userLon], 13);
@@ -36,25 +38,25 @@ var customIcon = L.icon({
 });
 
 // instantiate marker icon, add it to map.
-var marker = L.marker([51.5, -0.09], {icon: customIcon}).addTo(map);
+var marker = L.marker([userLat, userLon], {icon: customIcon}).addTo(map);
 
-map.on('click', onMapClick); // event listener 
+// map.on('click', onMapClick); // event listener 
 
 
 
 // click events 
-function onMapClick(e) {
-  marker.remove(); // remove previous marker 
-  console.log("You clicked the map at " + e.latlng);
-  marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: customIcon}).addTo(map); // add new marker 
-  marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup(); // add popup to new marker 
+// function onMapClick(e) {
+//   marker.remove(); // remove previous marker 
+//   console.log("You clicked the map at " + e.latlng);
+//   marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: customIcon}).addTo(map); // add new marker 
+//   marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup(); // add popup to new marker 
 
-  ipAddressEl.textContent = 'ip address';
-  locationOutputEl.textContent = 'location';
-  timezoneEl.textContent = 'timezone';
-  ispEl.textContent = 'isp';
-  console.log(e);
-}
+//   ipAddressEl.textContent = 'ip address';
+//   locationOutputEl.textContent = 'location';
+//   timezoneEl.textContent = 'timezone';
+//   ispEl.textContent = 'isp';
+//   console.log(e);
+// }
 
 
 // form 
@@ -77,24 +79,64 @@ search for IP address or domain and see key information. specifically:
 load user's ip address & location on initial page load. 
 */ 
 
-// fetch("https://geo.ipify.org/api/v2/country?apiKey=at_cbpvwgUoILVTIoQzrFC29pvknYnc9&ipAddress=8.8.8.8")
-//   .then(res => res.json())
-//   .then(data => console.log(data))
+
+// async function getIpInfo(ipAddress) {
+//   const res = await fetch(`https://geo.ipify.org/api/v2/country?apiKey=at_cbpvwgUoILVTIoQzrFC29pvknYnc9&ipAddress=${ipAddress}`)
+//   const data = await res.json()
+
+//   console.log(data.location)
+//   ipAddressEl.textContent = data.ip
+//   locationOutputEl.textContent = `${data.location.region}, ${data.location.country}`
+//   timezoneEl.textContent = `UTC ${data.location.timezone}`
+//   ispEl.textContent = data.isp
+// }
+
+
 async function getIpInfo(ipAddress) {
-  const res = await fetch(`https://geo.ipify.org/api/v2/country?apiKey=at_cbpvwgUoILVTIoQzrFC29pvknYnc9&ipAddress=${ipAddress}`)
+  const res = await fetch(`http://ip-api.com/json/${ipAddress}`)
   const data = await res.json()
 
-  console.log(data.location)
-  ipAddressEl.textContent = data.ip
-  locationOutputEl.textContent = `${data.location.region}, ${data.location.country}`
-  timezoneEl.textContent = `UTC ${data.location.timezone}`
+  console.log(data)
+
+  // update info display 
+  ipAddressEl.textContent = data.query
+  locationOutputEl.textContent = `${data.city}, ${data.country}`
+  timezoneEl.textContent = `${data.timezone}`
   ispEl.textContent = data.isp
+
+  // update map
+  userLat = data.lat
+  userLon = data.lon
+  map.panTo([userLat, userLon]);
+
+  marker.remove(); // remove previous marker 
+  marker = L.marker([userLat, userLon], {icon: customIcon}).addTo(map); // add new marker 
+
+  console.log(data.lat)
+  console.log(data.lon)
+  console.log(data.query)
 }
 
+let userIp 
+fetch('https://ipv4.jsonip.com', { mode: 'cors'} )
+  .then(res => res.json())
+  .then(data => { 
+    userIp = data.ip.toString()
+    console.log(userIp); 
+  });
+console.log(userIp);
+fetch(`http://ip-api.com/json/${userIp}`)
+  .then(res => res.json())
+  .then(data => { 
+    console.log(data); 
+  });
+
+  // this all fails because I'm not it's not running synchronously. I need to use await. 
+  // use type = module. then await for the stuff on page load. 
 
 
-
-
+// getIpInfo()
+  
 // getIpInfo("8.8.8.8")
 
 /* UPDATE 
@@ -117,4 +159,8 @@ async function getIpInfo(ipAddress) {
   I cba to continue the project from here. will move on. 
 
   i'm guessing the api changed their free use because idk what frontendmentor would include this API in their recommended projects otherwise. 
+
+  -----------------------
+  **UPDATE 
+  using a different API. provides everything I need except timezone data isn't in words instead of numbers 
 */ 
