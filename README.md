@@ -43,3 +43,6 @@ I used 2 API's.
 For user's IP info, I haven't yet included a failure scenario if user doesn't give access to location access. 
 
 Since I started this project ages ago, I didn't worry about the css of making it responsive, main focus was practicing JS skills. 
+
+Update: 
+- site fully works locally but doesn't work on github because the api call to ip-api.com uses http not https, and in order to use https, i'd need to pay for a key, which I'm not doing. 
