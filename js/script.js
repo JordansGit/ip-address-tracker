@@ -80,16 +80,7 @@ load user's ip address & location on initial page load.
 */ 
 
 
-// async function getIpInfo(ipAddress) {
-//   const res = await fetch(`https://geo.ipify.org/api/v2/country?apiKey=at_cbpvwgUoILVTIoQzrFC29pvknYnc9&ipAddress=${ipAddress}`)
-//   const data = await res.json()
 
-//   console.log(data.location)
-//   ipAddressEl.textContent = data.ip
-//   locationOutputEl.textContent = `${data.location.region}, ${data.location.country}`
-//   timezoneEl.textContent = `UTC ${data.location.timezone}`
-//   ispEl.textContent = data.isp
-// }
 
 
 async function getIpInfo(ipAddress) {
@@ -98,46 +89,51 @@ async function getIpInfo(ipAddress) {
 
   console.log(data)
 
-  // update info display 
-  ipAddressEl.textContent = data.query
-  locationOutputEl.textContent = `${data.city}, ${data.country}`
-  timezoneEl.textContent = `${data.timezone}`
-  ispEl.textContent = data.isp
+  if (data.status === 'success') {
+    // update info display 
+    ipAddressEl.textContent = data.query
+    locationOutputEl.textContent = `${data.city}, ${data.country}`
+    timezoneEl.textContent = `${data.timezone}`
+    ispEl.textContent = data.isp
 
-  // update map
-  userLat = data.lat
-  userLon = data.lon
-  map.panTo([userLat, userLon]);
+    // update map
+    userLat = data.lat
+    userLon = data.lon
+    map.panTo([userLat, userLon]);
 
-  marker.remove(); // remove previous marker 
-  marker = L.marker([userLat, userLon], {icon: customIcon}).addTo(map); // add new marker 
+    marker.remove(); // remove previous marker 
+    marker = L.marker([userLat, userLon], {icon: customIcon}).addTo(map); // add new marker 
 
-  console.log(data.lat)
-  console.log(data.lon)
-  console.log(data.query)
+    console.log(data.lat)
+    console.log(data.lon)
+    console.log(data.query)
+  }
 }
 
-let userIp 
-fetch('https://ipv4.jsonip.com', { mode: 'cors'} )
-  .then(res => res.json())
-  .then(data => { 
-    userIp = data.ip.toString()
-    console.log(userIp); 
-  });
-console.log(userIp);
-fetch(`http://ip-api.com/json/${userIp}`)
-  .then(res => res.json())
-  .then(data => { 
-    console.log(data); 
-  });
+
+// get user IP and display map location + IP info 
+async function getUserIp() {
+  let userIp 
+
+  // get user IP
+  const res = await fetch('https://ipv4.jsonip.com')
+  const data = await res.json()
+
+  userIp = data.ip.toString()
+  console.log(`User IP: ${userIp}`); 
+  
+  // get IP info & map location & display them 
+  getIpInfo(userIp)
+}
+window.addEventListener("load", getUserIp)
+
+
 
   // this all fails because I'm not it's not running synchronously. I need to use await. 
   // use type = module. then await for the stuff on page load. 
 
 
-// getIpInfo()
-  
-// getIpInfo("8.8.8.8")
+
 
 /* UPDATE 
   ** ENDING PROJECT HERE, WON'T CONTINUE ANY MORE. 
